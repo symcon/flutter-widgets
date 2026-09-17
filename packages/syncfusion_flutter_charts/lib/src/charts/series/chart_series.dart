@@ -2271,6 +2271,15 @@ abstract class ChartSeriesRenderer<T, D> extends RenderBox
     }
   }
 
+  /// Whether [segmentAt] can return a segment for [segmentPointIndex].
+  ///
+  /// The data source can be replaced while [segments] still belong to the
+  /// previous data (asynchronous updates), so a point index derived from the
+  /// current data count does not necessarily have a segment yet.
+  bool hasSegmentAt(int segmentPointIndex) {
+    return segmentPointIndex >= 0 && segmentPointIndex < segments.length;
+  }
+
   ChartSegment segmentAt(int segmentPointIndex) {
     return segments[segmentPointIndex];
   }
@@ -4646,6 +4655,11 @@ mixin ContinuousSeriesMixin<T, D> on CartesianSeriesRenderer<T, D> {
       }
     }
     return -1;
+  }
+
+  @override
+  bool hasSegmentAt(int segmentPointIndex) {
+    return segments.isNotEmpty;
   }
 
   @override

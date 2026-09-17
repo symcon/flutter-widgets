@@ -1444,6 +1444,14 @@ class FunnelSeriesRenderer<T, D> extends ChartSeriesRenderer<T, D>
   }
 
   @override
+  bool hasSegmentAt(int segmentPointIndex) {
+    return segments.any(
+      (ChartSegment segment) =>
+          segment.currentSegmentIndex == segmentPointIndex,
+    );
+  }
+
+  @override
   ChartSegment segmentAt(int segmentPointIndex) {
     return segments.firstWhere(
       (ChartSegment segment) =>

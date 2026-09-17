@@ -785,12 +785,16 @@ class TrackballBehavior extends ChartBehavior {
           position,
         );
         for (final int nearestPointIndex in nearestPointIndexes) {
-          ChartSegment segment;
-          try {
-            segment = child.segmentAt(nearestPointIndex);
-          } catch (_) {
+          // The nearest index is derived from the current data count, while
+          // the segments can be stale: a hidden series skips performLayout,
+          // where segments are created, but data updates still repopulate
+          // its data points. Indexing into them would throw a RangeError
+          // (or read past the array on the web, where release builds omit
+          // the bounds checks and a try/catch does not help).
+          if (!child.hasSegmentAt(nearestPointIndex)) {
             continue;
           }
+          final ChartSegment segment = child.segmentAt(nearestPointIndex);
           final TrackballInfo? trackballInfo = segment.trackballInfo(
             position,
             nearestPointIndex,
