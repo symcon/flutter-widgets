@@ -335,7 +335,9 @@ class StepAreaSegment<T, D> extends ChartSegment {
     _lowPoints.clear();
 
     _bottom =
-        series.xAxis!.crossesAt ?? max(series.yAxis!.visibleRange!.minimum, 0);
+        series.bottom ??
+        series.xAxis!.crossesAt ??
+        max(series.yAxis!.visibleRange!.minimum, 0);
 
     _fillPath.reset();
     _strokePath.reset();
